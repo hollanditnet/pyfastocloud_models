@@ -1,3 +1,5 @@
+from flask_login import UserMixin, login_user, logout_user
+
 from datetime import datetime
 from hashlib import md5
 from bson.objectid import ObjectId
@@ -10,6 +12,10 @@ from pyfastocloud_models.service.entry import ServiceSettings
 from pyfastocloud_models.stream.entry import IStream
 import pyfastocloud_models.constants as constants
 from pyfastocloud_models.utils.utils import date_to_utc_msec
+
+
+def login_user_wrap(user):
+    login_user(user)
 
 
 class Device(EmbeddedDocument):
@@ -75,7 +81,10 @@ class UserStream(EmbeddedDocument):
         return res
 
 
-class Subscriber(Document):
+class Subscriber(UserMixin, Document):
+    def logout(self):
+        logout_user()
+
     MAX_DATE = datetime(2100, 1, 1)
     ID_FIELD = 'id'
     EMAIL_FIELD = 'login'
@@ -100,7 +109,7 @@ class Subscriber(Document):
 
     SUBSCRIBER_HASH_LENGTH = 32
 
-    meta = {'allow_inheritance': True, 'collection': 'subscribers', 'auto_create_index': False}
+    meta = {'allow_inheritance': False, 'collection': 'subscribers', 'auto_create_index': False}
 
     email = StringField(max_length=64, required=True)
     first_name = StringField(max_length=64, required=True)
@@ -214,6 +223,12 @@ class Subscriber(Document):
     @staticmethod
     def check_password_hash(hash: str, password: str) -> bool:
         return hash == Subscriber.generate_password_hash(password)
+
+    @classmethod
+    def make_subscriber(cls, email: str, first_name: str, last_name: str, password: str, country: str, language: str):
+        return cls(email=email, first_name=first_name, last_name=last_name,
+                   password=Subscriber.make_md5_hash_from_password(password), country=country,
+                   language=language)
 
 
 Subscriber.register_delete_rule(ServiceSettings, 'subscribers', PULL)
