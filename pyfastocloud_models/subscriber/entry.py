@@ -44,7 +44,7 @@ class Device(EmbeddedDocument):
         def __str__(self):
             return str(self.value)
 
-    meta = {'allow_inheritance': False, 'auto_create_index': True}
+    meta = {'auto_create_index': True}
     id = ObjectIdField(required=True, default=ObjectId, unique=True, primary_key=True)
     created_date = DateTimeField(default=datetime.now)
     status = IntField(default=Status.NOT_ACTIVE)
