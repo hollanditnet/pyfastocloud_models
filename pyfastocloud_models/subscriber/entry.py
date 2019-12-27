@@ -158,7 +158,7 @@ class Subscriber(UserMixin, Document):
         return result
 
     def add_official_stream_by_id(self, oid: ObjectId):
-        user_stream = UserStream(oid)
+        user_stream = UserStream(sid=oid)
         self.add_official_stream(user_stream)
 
     def add_official_stream(self, stream: UserStream):
@@ -169,7 +169,7 @@ class Subscriber(UserMixin, Document):
             self.save()
 
     def add_own_stream(self, stream: IStream):
-        user_stream = UserStream(stream.id)
+        user_stream = UserStream(sid=stream.id)
         user_stream.private = True
         found_streams = self.streams.filter(sid=stream)
         if not found_streams:
