@@ -1,49 +1,5 @@
 from enum import IntEnum
 
-
-class StreamType(IntEnum):
-    PROXY = 0
-    VOD_PROXY = 1
-    RELAY = 2
-    ENCODE = 3
-    TIMESHIFT_PLAYER = 4
-    TIMESHIFT_RECORDER = 5
-    CATCHUP = 6
-    TEST_LIFE = 7
-    VOD_RELAY = 8
-    VOD_ENCODE = 9
-    COD_RELAY = 10
-    COD_ENCODE = 11
-    EVENT = 12
-
-    @classmethod
-    def choices(cls):
-        return [(choice, choice.name) for choice in cls]
-
-    @classmethod
-    def coerce(cls, item):
-        return cls(int(item)) if not isinstance(item, cls) else item
-
-    def __str__(self):
-        return str(self.value)
-
-
-class VodType(IntEnum):
-    VODS = 0
-    SERIES = 1
-
-    @classmethod
-    def choices(cls):
-        return [(choice, choice.name) for choice in cls]
-
-    @classmethod
-    def coerce(cls, item):
-        return cls(int(item)) if not isinstance(item, cls) else item
-
-    def __str__(self):
-        return str(self.value)
-
-
 MIN_COUNTRY_LENGTH = 2
 MAX_COUNTRY_LENGTH = 2048
 MIN_URL_LENGTH = 3
@@ -169,28 +125,6 @@ MIN_STREAM_DESCRIPTION_LENGTH = 0
 MAX_STREAM_DESCRIPTION_LENGTH = 4096
 
 MAX_VIDEO_DURATION_MSEC = 3600 * 1000 * 365
-
-def round_value(value: float):
-    return round(value, PRECISION)
-
-
-class UserAgent(IntEnum):
-    GSTREAMER = 0
-    VLC = 1
-    FFMPEG = 2
-    WINK = 3
-
-    @classmethod
-    def choices(cls):
-        return [(choice, choice.name) for choice in cls]
-
-    @classmethod
-    def coerce(cls, item):
-        return cls(int(item)) if not isinstance(item, cls) else item
-
-    def __str__(self):
-        return str(self.value)
-
 
 AVAILABLE_COUNTRIES = [('AF', 'Afghanistan'),
                        ('AX', 'Åland Islands'),
@@ -443,6 +377,28 @@ AVAILABLE_COUNTRIES = [('AF', 'Afghanistan'),
                        ('ZW', 'Zimbabwe')]
 
 
+def round_value(value: float):
+    return round(value, PRECISION)
+
+
+class UserAgent(IntEnum):
+    GSTREAMER = 0
+    VLC = 1
+    FFMPEG = 2
+    WINK = 3
+
+    @classmethod
+    def choices(cls):
+        return [(choice, choice.name) for choice in cls]
+
+    @classmethod
+    def coerce(cls, item):
+        return cls(int(item)) if not isinstance(item, cls) else item
+
+    def __str__(self):
+        return str(self.value)
+
+
 class MessageType(IntEnum):
     TEXT = 0
     HYPERLINK = 1
@@ -468,3 +424,46 @@ class PlayerMessage:
         self.message = message
         self.ttl = ttl
         self.type = message_type
+
+
+class StreamType(IntEnum):
+    PROXY = 0
+    VOD_PROXY = 1
+    RELAY = 2
+    ENCODE = 3
+    TIMESHIFT_PLAYER = 4
+    TIMESHIFT_RECORDER = 5
+    CATCHUP = 6
+    TEST_LIFE = 7
+    VOD_RELAY = 8
+    VOD_ENCODE = 9
+    COD_RELAY = 10
+    COD_ENCODE = 11
+    EVENT = 12
+
+    @classmethod
+    def choices(cls):
+        return [(choice, choice.name) for choice in cls]
+
+    @classmethod
+    def coerce(cls, item):
+        return cls(int(item)) if not isinstance(item, cls) else item
+
+    def __str__(self):
+        return str(self.value)
+
+
+class VodType(IntEnum):
+    VODS = 0
+    SERIES = 1
+
+    @classmethod
+    def choices(cls):
+        return [(choice, choice.name) for choice in cls]
+
+    @classmethod
+    def coerce(cls, item):
+        return cls(int(item)) if not isinstance(item, cls) else item
+
+    def __str__(self):
+        return str(self.value)

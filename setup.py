@@ -13,7 +13,7 @@ from setuptools import find_packages, setup, Command
 
 # Package meta-data.
 NAME = 'pyfastocloud_models'
-DESCRIPTION = 'FastoCloud python client files.'
+DESCRIPTION = 'FastoCloud python models files.'
 URL = 'https://github.com/fastogt/pyfastocloud_models'
 EMAIL = 'support@fastogt.com'
 AUTHOR = 'Alexandr Topilski'
