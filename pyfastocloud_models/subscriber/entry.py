@@ -83,7 +83,7 @@ class UserStream(EmbeddedDocument):
     def to_front_dict(self):
         return {StreamFields.ID_FIELD: self.get_id(), UserStream.FAVORITE_FIELD: self.favorite,
                 UserStream.PRIVATE_FIELD: self.private,
-                UserStream.RECENT_FIELD: self.recent}
+                UserStream.RECENT_FIELD: date_to_utc_msec(self.recent)}
 
 
 class Subscriber(UserMixin, Document):
