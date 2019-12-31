@@ -7,7 +7,8 @@ from mongoengine import StringField, IntField, EmbeddedDocumentField, Document, 
 
 from pyfastocloud_models.utils.utils import date_to_utc_msec
 import pyfastocloud_models.constants as constants
-from pyfastocloud_models.common_entries import Rational, Size, Logo, RSVGLogo, InputUrls, InputUrl, OutputUrls, OutputUrl
+from pyfastocloud_models.common_entries import Rational, Size, Logo, RSVGLogo, InputUrls, InputUrl, OutputUrls, \
+    OutputUrl
 
 
 class ConfigFields:
@@ -54,29 +55,29 @@ class ConfigFields:
 
 
 class BaseFields:
-    NAME = 'name'
-    ID = 'id'
-    PRICE = 'price'
-    GROUP = 'group'
-    VISIBLE = 'visible'
-    IARC = 'iarc'
+    NAME_FIELD = 'name'
+    ID_FIELD = 'id'
+    PRICE_FIELD = 'price'
+    GROUP_FIELD = 'group'
+    VISIBLE_FIELD = 'visible'
+    IARC_FIELD = 'iarc'
 
-    TYPE = 'type'
-    INPUT_STREAMS = 'input_streams'
-    OUTPUT_STREAMS = 'output_streams'
-    LOOP_START_TIME = 'loop_start_time'
-    RSS = 'rss'
-    CPU = 'cpu'
-    STATUS = 'status'
-    RESTARTS = 'restarts'
-    START_TIME = 'start_time'
-    TIMESTAMP = 'timestamp'
-    IDLE_TIME = 'idle_time'
+    TYPE_FIELD = 'type'
+    INPUT_STREAMS_FIELD = 'input_streams'
+    OUTPUT_STREAMS_FIELD = 'output_streams'
+    LOOP_START_TIME_FIELD = 'loop_start_time'
+    RSS_FIELD = 'rss'
+    CPU_FIELD = 'cpu'
+    STATUS_FIELD = 'status'
+    RESTARTS_FIELD = 'restarts'
+    START_TIME_FIELD = 'start_time'
+    TIMESTAMP_FIELD = 'timestamp'
+    IDLE_TIME_FIELD = 'idle_time'
 
 
 class StreamFields(BaseFields):
-    ICON = 'icon'
-    QUALITY = 'quality'
+    ICON_FIELD = 'icon'
+    QUALITY_FIELD = 'quality'
 
 
 class VodFields(BaseFields):
@@ -149,9 +150,11 @@ class IStream(Document):
         return self.group.split(';')
 
     def to_dict(self) -> dict:
-        return {StreamFields.NAME: self.name, StreamFields.ID: self.get_id(), StreamFields.TYPE: self.get_type(),
-                StreamFields.ICON: self.tvg_logo, StreamFields.PRICE: self.price, StreamFields.VISIBLE: self.visible,
-                StreamFields.IARC: self.iarc, StreamFields.GROUP: self.group}
+        return {StreamFields.NAME_FIELD: self.name, StreamFields.ID_FIELD: self.get_id(),
+                StreamFields.TYPE_FIELD: self.get_type(),
+                StreamFields.ICON_FIELD: self.tvg_logo, StreamFields.PRICE_FIELD: self.price,
+                StreamFields.VISIBLE_FIELD: self.visible,
+                StreamFields.IARC_FIELD: self.iarc, StreamFields.GROUP_FIELD: self.group}
 
     def __init__(self, *args, **kwargs):
         super(IStream, self).__init__(*args, **kwargs)
@@ -292,35 +295,35 @@ class HardwareStream(IStream):
         self._output_streams = str()
 
     def update_runtime_fields(self, params: dict):
-        assert self.get_id() == params[StreamFields.ID]
-        assert self.get_type() == params[StreamFields.TYPE]
-        self._status = StreamStatus(params[StreamFields.STATUS])
-        self._cpu = params[StreamFields.CPU]
-        self._timestamp = params[StreamFields.TIMESTAMP]
-        self._idle_time = params[StreamFields.IDLE_TIME]
-        self._rss = params[StreamFields.RSS]
-        self._loop_start_time = params[StreamFields.LOOP_START_TIME]
-        self._restarts = params[StreamFields.RESTARTS]
-        self._start_time = params[StreamFields.START_TIME]
-        self._input_streams = params[StreamFields.INPUT_STREAMS]
-        self._output_streams = params[StreamFields.OUTPUT_STREAMS]
+        assert self.get_id() == params[StreamFields.ID_FIELD]
+        assert self.get_type() == params[StreamFields.TYPE_FIELD]
+        self._status = StreamStatus(params[StreamFields.STATUS_FIELD])
+        self._cpu = params[StreamFields.CPU_FIELD]
+        self._timestamp = params[StreamFields.TIMESTAMP_FIELD]
+        self._idle_time = params[StreamFields.IDLE_TIME_FIELD]
+        self._rss = params[StreamFields.RSS_FIELD]
+        self._loop_start_time = params[StreamFields.LOOP_START_TIME_FIELD]
+        self._restarts = params[StreamFields.RESTARTS_FIELD]
+        self._start_time = params[StreamFields.START_TIME_FIELD]
+        self._input_streams = params[StreamFields.INPUT_STREAMS_FIELD]
+        self._output_streams = params[StreamFields.OUTPUT_STREAMS_FIELD]
 
     def to_dict(self) -> dict:
         front = super(HardwareStream, self).to_dict()
-        front[StreamFields.STATUS] = self._status
-        front[StreamFields.CPU] = self._cpu
-        front[StreamFields.TIMESTAMP] = self._timestamp
-        front[StreamFields.IDLE_TIME] = self._idle_time
-        front[StreamFields.RSS] = self._rss
-        front[StreamFields.LOOP_START_TIME] = self._loop_start_time
-        front[StreamFields.RESTARTS] = self._restarts
-        front[StreamFields.START_TIME] = self._start_time
-        front[StreamFields.INPUT_STREAMS] = self._input_streams
-        front[StreamFields.OUTPUT_STREAMS] = self._output_streams
+        front[StreamFields.STATUS_FIELD] = self._status
+        front[StreamFields.CPU_FIELD] = self._cpu
+        front[StreamFields.TIMESTAMP_FIELD] = self._timestamp
+        front[StreamFields.IDLE_TIME_FIELD] = self._idle_time
+        front[StreamFields.RSS_FIELD] = self._rss
+        front[StreamFields.LOOP_START_TIME_FIELD] = self._loop_start_time
+        front[StreamFields.RESTARTS_FIELD] = self._restarts
+        front[StreamFields.START_TIME_FIELD] = self._start_time
+        front[StreamFields.INPUT_STREAMS_FIELD] = self._input_streams
+        front[StreamFields.OUTPUT_STREAMS_FIELD] = self._output_streams
         # runtime
         work_time = self._timestamp - self._start_time
         quality = 100 - (100 * self._idle_time / work_time) if work_time else 100
-        front[StreamFields.QUALITY] = quality
+        front[StreamFields.QUALITY_FIELD] = quality
         return front
 
     def config(self) -> dict:

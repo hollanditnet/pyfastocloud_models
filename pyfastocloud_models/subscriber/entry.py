@@ -9,7 +9,7 @@ from mongoengine import Document, EmbeddedDocument, StringField, DateTimeField, 
     PULL, ObjectIdField, BooleanField, EmbeddedDocumentListField
 
 from pyfastocloud_models.service.entry import ServiceSettings
-from pyfastocloud_models.stream.entry import IStream
+from pyfastocloud_models.stream.entry import IStream, StreamFields
 import pyfastocloud_models.constants as constants
 from pyfastocloud_models.utils.utils import date_to_utc_msec
 
@@ -79,6 +79,11 @@ class UserStream(EmbeddedDocument):
         res[UserStream.PRIVATE_FIELD] = self.private
         res[UserStream.RECENT_FIELD] = self.recent
         return res
+
+    def to_front_dict(self):
+        return {StreamFields.ID_FIELD: self.get_id(), UserStream.FAVORITE_FIELD: self.favorite,
+                UserStream.PRIVATE_FIELD: self.private,
+                UserStream.RECENT_FIELD: self.recent}
 
 
 class Subscriber(UserMixin, Document):
