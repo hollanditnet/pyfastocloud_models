@@ -162,6 +162,9 @@ class Subscriber(UserMixin, Document):
 
         return result
 
+    def all_streams(self):
+        return self.streams
+
     def add_official_stream_by_id(self, oid: ObjectId):
         user_stream = UserStream(sid=oid)
         self.add_official_stream(user_stream)
