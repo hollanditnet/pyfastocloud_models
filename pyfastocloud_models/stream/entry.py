@@ -156,6 +156,13 @@ class IStream(Document):
                 StreamFields.VISIBLE_FIELD: self.visible,
                 StreamFields.IARC_FIELD: self.iarc, StreamFields.GROUP_FIELD: self.group}
 
+    def to_front_dict(self) -> dict:
+        return {StreamFields.NAME_FIELD: self.name, StreamFields.ID_FIELD: self.get_id(),
+                StreamFields.TYPE_FIELD: self.get_type(),
+                StreamFields.ICON_FIELD: self.tvg_logo, StreamFields.PRICE_FIELD: self.price,
+                StreamFields.VISIBLE_FIELD: self.visible,
+                StreamFields.IARC_FIELD: self.iarc, StreamFields.GROUP_FIELD: self.group}
+
     def __init__(self, *args, **kwargs):
         super(IStream, self).__init__(*args, **kwargs)
         self._settings = None
