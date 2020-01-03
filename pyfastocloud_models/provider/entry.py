@@ -18,7 +18,7 @@ class Provider(Document):
         GUEST = 0,
         USER = 1
 
-    meta = {'allow_inheritance': False, 'collection': 'providers', 'auto_create_index': False}
+    meta = {'allow_inheritance': True, 'collection': 'providers', 'auto_create_index': False}
     email = StringField(max_length=64, required=True)
     password = StringField(required=True)
     created_date = DateTimeField(default=datetime.now)
