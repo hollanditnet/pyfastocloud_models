@@ -5,6 +5,8 @@ import pyfastocloud_models.constants as constants
 
 
 class Url(EmbeddedDocument):
+    meta = {'allow_inheritance': True, 'auto_create_index': False}
+    
     _next_url_id = 0
 
     id = IntField(default=lambda: Url.generate_id(), required=True)
