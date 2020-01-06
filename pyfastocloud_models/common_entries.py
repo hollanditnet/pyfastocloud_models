@@ -6,7 +6,7 @@ import pyfastocloud_models.constants as constants
 
 class Url(EmbeddedDocument):
     meta = {'allow_inheritance': True, 'auto_create_index': False}
-    
+
     _next_url_id = 0
 
     id = IntField(default=lambda: Url.generate_id(), required=True)
@@ -43,6 +43,7 @@ class InputUrl(Url):
 
 class OutputUrl(Url):
     http_root = StringField(default='/', max_length=constants.MAX_PATH_LENGTH, required=False)
+    hls_type = IntField(default=constants.HlsType.HLS_PULL, required=False)
 
 
 # {"urls": [{"id": 81,"uri": "tcp://localhost:1935"}]}
