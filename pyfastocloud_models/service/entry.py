@@ -74,7 +74,6 @@ class ServiceSettings(Document):
     streams = ListField(ReferenceField(IStream, reverse_delete_rule=PULL), default=[])
     series = ListField(ReferenceField(Serial, reverse_delete_rule=PULL), default=[])
     providers = EmbeddedDocumentListField(ProviderPair, default=[])
-    subscribers = ListField(ReferenceField('Subscriber'), default=[])
 
     name = StringField(unique=True, default=DEFAULT_SERVICE_NAME, max_length=MAX_SERVICE_NAME_LENGTH,
                        min_length=MIN_SERVICE_NAME_LENGTH)
@@ -149,14 +148,6 @@ class ServiceSettings(Document):
         providers = self.providers.filter(user=provider)
         providers.delete()
         self.providers.save()
-
-    def add_subscriber(self, subscriber):
-        self.subscribers.append(subscriber)
-        self.save()
-
-    def remove_subscriber(self, subscriber):
-        self.subscribers.remove(subscriber)
-        self.save()
 
     def find_stream_settings_by_id(self, sid: ObjectId):
         for stream in self.streams:

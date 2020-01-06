@@ -218,7 +218,7 @@ class Subscriber(UserMixin, Document):
 
     def delete(self, *args, **kwargs):
         self.remove_all_own_streams()
-        return super(Subscriber, self).delete(*args, **kwargs)
+        return Document.delete(self, *args, **kwargs)
 
     @staticmethod
     def make_md5_hash_from_password(password: str) -> str:
@@ -239,6 +239,3 @@ class Subscriber(UserMixin, Document):
         return cls(email=email, first_name=first_name, last_name=last_name,
                    password=Subscriber.make_md5_hash_from_password(password), country=country,
                    language=language)
-
-
-Subscriber.register_delete_rule(ServiceSettings, 'subscribers', PULL)
