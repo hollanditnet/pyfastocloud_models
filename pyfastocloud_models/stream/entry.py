@@ -353,23 +353,24 @@ class HardwareStream(IStream):
     def generate_feedback_dir(self):
         return '{0}/{1}/{2}'.format(self._settings.feedback_directory, self.get_type(), self.get_id())
 
-    def generate_http_link(self, playlist_name=constants.DEFAULT_HLS_PLAYLIST) -> OutputUrl:
+    def generate_http_link(self, hls_type: constants.HlsType,
+                           playlist_name=constants.DEFAULT_HLS_PLAYLIST) -> OutputUrl:
         oid = OutputUrl.generate_id()
         http_root = self._generate_http_root_dir(oid)
         link = '{0}/{1}'.format(http_root, playlist_name)
-        return OutputUrl(id=oid, uri=self._settings.generate_http_link(link), http_root=http_root)
+        return OutputUrl(id=oid, uri=self._settings.generate_http_link(link), http_root=http_root, hls_type=hls_type)
 
-    def generate_vod_link(self, playlist_name=constants.DEFAULT_HLS_PLAYLIST) -> OutputUrl:
+    def generate_vod_link(self, hls_type: constants.HlsType, playlist_name=constants.DEFAULT_HLS_PLAYLIST) -> OutputUrl:
         oid = OutputUrl.generate_id()
         vods_root = self._generate_vods_root_dir(oid)
         link = '{0}/{1}'.format(vods_root, playlist_name)
-        return OutputUrl(id=oid, uri=self._settings.generate_vods_link(link), http_root=vods_root)
+        return OutputUrl(id=oid, uri=self._settings.generate_vods_link(link), http_root=vods_root, hls_type=hls_type)
 
-    def generate_cod_link(self, playlist_name=constants.DEFAULT_HLS_PLAYLIST) -> OutputUrl:
+    def generate_cod_link(self, hls_type: constants.HlsType, playlist_name=constants.DEFAULT_HLS_PLAYLIST) -> OutputUrl:
         oid = OutputUrl.generate_id()
         cods_root = self._generate_cods_root_dir(oid)
         link = '{0}/{1}'.format(cods_root, playlist_name)
-        return OutputUrl(id=oid, uri=self._settings.generate_cods_link(link), http_root=cods_root)
+        return OutputUrl(id=oid, uri=self._settings.generate_cods_link(link), http_root=cods_root, hls_type=hls_type)
 
     def get_log_level(self):
         return self.log_level
@@ -441,7 +442,7 @@ class HardwareStream(IStream):
             parsed_uri = urlparse(url)
             if parsed_uri.scheme == 'http':
                 filename = os.path.basename(parsed_uri.path)
-                self.output.urls[idx] = self.generate_http_link(filename)
+                self.output.urls[idx] = self.generate_http_link(url.hls_type, filename)
 
     def _fixup_vod_output_urls(self):
         for idx, val in enumerate(self.output.urls):
@@ -452,7 +453,7 @@ class HardwareStream(IStream):
             parsed_uri = urlparse(url)
             if parsed_uri.scheme == 'http':
                 filename = os.path.basename(parsed_uri.path)
-                self.output.urls[idx] = self.generate_vod_link(filename)
+                self.output.urls[idx] = self.generate_vod_link(url.hls_type, filename)
 
     def _fixup_cod_output_urls(self):
         for idx, val in enumerate(self.output.urls):
@@ -463,7 +464,7 @@ class HardwareStream(IStream):
             parsed_uri = urlparse(url)
             if parsed_uri.scheme == 'http':
                 filename = os.path.basename(parsed_uri.path)
-                self.output.urls[idx] = self.generate_cod_link(filename)
+                self.output.urls[idx] = self.generate_cod_link(url.hls_type, filename)
 
 
 class RelayStream(HardwareStream):
