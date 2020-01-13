@@ -100,8 +100,7 @@ class Subscriber(UserMixin, Document):
     class Status(IntEnum):
         NOT_ACTIVE = 0
         ACTIVE = 1
-        TRIAL_FINISHED = 2
-        BANNED = 3
+        BANNED = 2
 
         @classmethod
         def choices(cls):
