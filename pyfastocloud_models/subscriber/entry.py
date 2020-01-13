@@ -100,7 +100,7 @@ class Subscriber(UserMixin, Document):
     class Status(IntEnum):
         NOT_ACTIVE = 0
         ACTIVE = 1
-        BANNED = 2
+        DELETED = 2
 
         @classmethod
         def choices(cls):
@@ -217,7 +217,8 @@ class Subscriber(UserMixin, Document):
 
     def delete(self, *args, **kwargs):
         self.remove_all_own_streams()
-        return Document.delete(self, *args, **kwargs)
+        self.status = Subscriber.Status.DELETED
+        # return Document.delete(self, *args, **kwargs)
 
     @staticmethod
     def make_md5_hash_from_password(password: str) -> str:
