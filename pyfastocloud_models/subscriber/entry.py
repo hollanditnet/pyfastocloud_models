@@ -234,7 +234,8 @@ class Subscriber(UserMixin, Document):
         return hash == Subscriber.generate_password_hash(password)
 
     @classmethod
-    def make_subscriber(cls, email: str, first_name: str, last_name: str, password: str, country: str, language: str):
+    def make_subscriber(cls, email: str, first_name: str, last_name: str, password: str, country: str, language: str,
+                        exp_date=MAX_DATE):
         return cls(email=email, first_name=first_name, last_name=last_name,
                    password=Subscriber.make_md5_hash_from_password(password), country=country,
-                   language=language)
+                   language=language, exp_date=exp_date)
